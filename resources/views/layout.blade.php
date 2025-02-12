@@ -14,19 +14,20 @@
 
 <body>
     <header>
-        <img src="{{asset('logo.png')}}" alt="logo">
+        <a href="/"><img src="{{asset('logo.png')}}" alt="logo"></a>
         <nav>
             <ul>
-<li><a href="{{route('aitools.index')}}">AI eszközök</a></li>
-<li><a href="{{route('categories.index')}}">Kategóriák</a></li>
-<li><a href="{{route('categories.create')}}">Új kategóriák</a></li>
-
+                <li><a href="{{route('aitools.index')}}">AI eszközök</a></li>
+                <li><a href="{{route('categories.index')}}">Kategóriák</a></li>
+                <li><a href="{{route('categories.create')}}">Új kategóriák</a></li>
             </ul>
         </nav>
     </header>
     <main>
-
         @yield('content')
+
+          {{-- Ha nincs content szekció, akkor ez töltődik be alapértelmezetten --}}
+          @includeWhen(!View::hasSection('content'), 'base')
     </main>
     <footer>
         <p>&copy; 2025 Webmania - ThomasHorvath</p>

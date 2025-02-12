@@ -63,12 +63,30 @@ h1 {
     text-align: center;
 }
 
+
 ul {
     list-style: none;
 }
 
 a {
     text-decoration: none;
+}
+
+
+.title-container {
+    min-height:70vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    h2 {
+        font-size: 4rem;
+margin-bottom: 3rem;
+    }
+    p {
+        font-size: 3rem;
+    }
 }
 
 /* forms */
@@ -112,9 +130,11 @@ textarea {
     height: 5rem;
     border-radius: 0.5em;
 }
+
 small {
     display: block;
 }
+
 /* header */
 header {
     display: flex;
@@ -181,8 +201,9 @@ footer {
 
 /* alerts */
 .alert-container {
-    min-height:4rem;
+    min-height: 4rem;
 }
+
 .alert {
     font-family: Poppins, sans-serif;
     background-color: var(--light);
@@ -191,6 +212,7 @@ footer {
     border-radius: 0.5em;
     margin: 1em 0;
 }
+
 .alert-warning::before {
     content: "⚠️";
     margin-right: 0.5em;

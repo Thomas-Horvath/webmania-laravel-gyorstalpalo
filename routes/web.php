@@ -5,7 +5,7 @@ use App\Http\Controllers\categoriesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('layout');
+    return view('base');
 });
 
 Route::resource('categories', categoriesController::class);
