@@ -48,6 +48,19 @@
         <input type="number" name="price" id="price" value="{{ $aitool->price ? $aitool->price : 0}}"/>
     </fieldset>
 
+    <fieldset>
+        <label for="tags">Cimkék</label>
+        <select name="tags[]" id="tags" multiple >
+            @foreach ($tags as $tag)
+                <option value="{{ $tag->id }}"
+                    @if(in_array($tag->id, $aitool->tags->pluck('id')->toArray())) selected @endif>
+                    {{ $tag->name }}
+                </option>
+            @endforeach
+        </select>
+    </fieldset>
+
+
     <button type="submit">Ment</button>
 </form>
 

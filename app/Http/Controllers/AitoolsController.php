@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\tag;
 use App\Models\Aitool;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -13,7 +14,10 @@ class AitoolsController extends Controller
      */
     public function index()
     {
-        $aitools = Aitool::all();
+
+        $sort_by = request()->query('sort_by', 'name');
+        $sort_dir = request()->query('sort_dir', 'asc');
+        $aitools = Aitool::with('tags')->orderBy($sort_by, $sort_dir)->get();
         return view('aitools.index', compact('aitools'));
     }
 
@@ -22,8 +26,9 @@ class AitoolsController extends Controller
      */
     public function create()
     {
+        $tags = tag::all();
         $categories = Category::all();
-        return view('aitools.create', compact('categories'));
+        return view('aitools.create', compact('categories', 'tags'));
     }
 
     /**
@@ -45,7 +50,8 @@ class AitoolsController extends Controller
             'price' => 'nullable|numeric',
         ]);
 
-        Aitool::create($request->all());
+        $aitool = Aitool::create($request->all());
+        $aitool->tags()->attach($request->tags);
         return redirect()->route('aitools.index')->with('success', 'Az ia eszköz sikeresen mentve!');
     }
 
@@ -63,9 +69,10 @@ class AitoolsController extends Controller
      */
     public function edit(string $id)
     {
+        $tags = tag::all();
         $categories = Category::all();
-        $aitool = Aitool::find($id);
-        return view('aitools.edit', compact('aitool', 'categories'));
+        $aitool = Aitool::with('tags')->find($id);
+        return view('aitools.edit', compact('aitool', 'categories', 'tags'));
     }
 
     /**
@@ -77,8 +84,7 @@ class AitoolsController extends Controller
         $hasFreePlan = $request->has('hasFreePlan');
         if ($hasFreePlan) {
             $request->merge(['hasFreePlan' => true]);
-        }
-        else {
+        } else {
             $request->merge(['hasFreePlan' => false]);
         }
 
@@ -91,8 +97,9 @@ class AitoolsController extends Controller
             'price' => 'nullable|numeric',
         ]);
 
-        $aitools = Aitool::findOrFail($id);
+        $aitools = Aitool::with('tags')->find($id);
         $aitools->update($request->all());
+        $aitools->tags()->sync($request->input('tags', []));
         return redirect()->route('aitools.index')->with('success', 'Az Ai eszköz sikeresen módosítva.');
     }
 
@@ -102,6 +109,10 @@ class AitoolsController extends Controller
     public function destroy(string $id)
     {
         $aitools = Aitool::find($id);
+
+        // Először töröljük az összes hozzá kapcsolódó tag-et a pivot táblából
+        $aitools->tags()->detach();
+
         $aitools->delete();
 
         return redirect()->route('aitools.index')->with('success', 'Az AI eszköz sikeresen törölve.');

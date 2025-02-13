@@ -47,6 +47,15 @@
         <input type="number" name="price" id="price" />
     </fieldset>
 
+    <fieldset>
+        <label for="tags">Cimkék</label>
+        <select name="tags[]" id="tags" multiple >
+            @foreach ($tags as $tag)
+                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+            @endforeach
+        </select>
+    </fieldset>
+
     <button type="submit">Ment</button>
 </form>
 
