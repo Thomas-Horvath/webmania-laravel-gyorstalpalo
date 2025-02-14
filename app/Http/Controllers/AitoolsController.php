@@ -17,7 +17,7 @@ class AitoolsController extends Controller
 
         $sort_by = request()->query('sort_by', 'name');
         $sort_dir = request()->query('sort_dir', 'asc');
-        $aitools = Aitool::with('tags')->orderBy($sort_by, $sort_dir)->get();
+        $aitools = Aitool::with('tags')->orderBy($sort_by, $sort_dir)->paginate(5);
         return view('aitools.index', compact('aitools'));
     }
 

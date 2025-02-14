@@ -49,7 +49,10 @@
     </li>
     @endforeach
 </ul>
+<div id="paginator">
 
+    {{$aitools->appends(['sort_by'=> request('sort_by'), 'sort_dir' => request('sort_dir') ])->links()}}
+</div>
 
 @endsection
 
